@@ -10,18 +10,17 @@ const goods = [
   },
   {
     title: 'Shoes', price: 250
+  },
+  {
+    price: 350
   }
 ];
 
-const renderGoodsItem = (title, price) => {
-  return `<div class="goods-item"><h3>${title}</h3><p>${price}</p></div>`;
-};
+const renderGoodsItem = (title = 'No name', price = 0) => `<div class="goods-item"><h3>${title}</h3><p>${price}</p></div>`;
 
-const renderGoodsList = (list = [{title: 'Empty', price: 0}]) => {
+const renderGoodsList = (list = []) => {
   const goodsList = list.map(item => renderGoodsItem(item.title, item.price));
-  let resultGoodsList = '';
-  goodsList.forEach(function(elem){ resultGoodsList += elem; });
-  document.querySelector('.goods-list').innerHTML = resultGoodsList;
+  document.querySelector('.goods-list').innerHTML = goodsList.join('');
 };
 
 
