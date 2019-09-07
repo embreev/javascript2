@@ -13,6 +13,12 @@ class GoodsList {
     this.container = container;
     this.goods = [];
   }
+  totalPrice() {
+    return this.goods.reduce((total, good) => {
+      if (!good.price) return total;
+      return total += good.price;
+    }, 0);
+  }
   fetchGoods() {
     this.goods = [
       {
@@ -32,11 +38,6 @@ class GoodsList {
       }
     ];
   }
-  sumAllGoods() {
-	let sum = 0;
-	this.goods.forEach((goods) => sum += goods.price);
-	return sum;
-  }
   render() {
     document.querySelector(this.container).innerHTML = this.goods.reduce((acc, item) => {
       const good = new GoodsItem(item.title, item.price);
@@ -45,34 +46,26 @@ class GoodsList {
   }
 }
 
-class Basket {
-	constructor() {
-    this.goodsInBasket = [];
+class Cart extends GoodsList {
+  add(good) {}
+  remove(id) {
+    if (!id) {
+      // clean cart
+      return;
+    }
   }
-  sumBasket() {
-	let sum = 0;
-	this.goodsInBasket.forEach((goodsInBasket) => sum += (goodsInBasket.price * goodsInBasket.count));
-	return sum;
-  }
-  addItem() {
-    this.goodsInBasket.push(new BasketItem(title, price, count));
-  }
-  clearBasket() {
-	this.goodsInBasket.forEach((goodsInBasket) => goodsInBasket.pop());  
-  }
+  update(id, good) {}
 }
 
-class BasketItem {
-  constructor(title, price, count) {
-    this.title = title;
-    this.price = price;
-	this.count = count;
+class CartItem extends GoodsItem {
+  constructor(title = 'No name', price = 'No price', count = 1) {
+    super(title, price);
+    this.count = count;
   }
-  //тут нужно подумать про дублирование товаров, чтобы не добавлять новый, а увеличивать count.
 }
 
 
 const list = new GoodsList('.goods-list');
 list.fetchGoods();
+console.log(list.totalPrice());
 list.render();
-console.log(list.sumAllGoods());
