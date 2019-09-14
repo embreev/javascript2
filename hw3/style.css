@@ -23,6 +23,13 @@ button {
     color: #fff;
 }
 
+.cart-goods-item {
+	display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 660px;
+}
+
 .cart-button {
     margin-left: auto;
 }
