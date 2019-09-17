@@ -1,26 +1,43 @@
 const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-function makeGETRequest(url) {
-  return new Promise((resolve, reject) => {
-    const xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : new window.ActiveXObject('Microsoft.XMLHTTP');
+const app = new Vue({
+	el: '#app',
+	data: {
+		goods: [],
+		filteredGoods: [],
+		searchLine: ''
+	},
+	methods: {
+		makeGETRequest(url) {
+			return new Promise((resolve, reject) => {
+				const xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : new window.ActiveXObject('Microsoft.XMLHTTP');
 
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        const response = JSON.parse(xhr.responseText);
-        if (xhr.status !== 200) reject(response);
-        resolve(response);
-      }
-    };
+				xhr.onreadystatechange = function () {
+				  if (xhr.readyState === 4) {
+					const response = JSON.parse(xhr.responseText);
+					if (xhr.status !== 200) reject(response);
+					resolve(response);
+				  }
+				};
 
-    xhr.onerror = function (e) {
-      reject(e);
-    };
+				xhr.onerror = function (e) {
+				  reject(e);
+				};
 
-    xhr.open('GET', url);
-    xhr.send();
-  });
-}
+				xhr.open('GET', url);
+				xhr.send();
+			});
+		}
+	},
+	mounted() {
+		this.makeGETRequest(`${BASE_URL}/catalogData.json`).then( (goods) => {
+			this.goods = goods;
+			this.filteredGoods = goods;
+		});
+	}
+});
 
+/*
 class GoodsItem {
   constructor(id, title = 'No name', price = 'No price') {
     this.id = id;
@@ -29,8 +46,8 @@ class GoodsItem {
   }
   render() {
     return `<div class="goods-item" >
-      <h3>${this.title}</h3>
-      <p>${this.price}</p>
+      <h3>{{ this.title }}</h3>
+      <p>{{ this.price }}</p>
       <button data-id="${this.id}">Добавить в корзину</button>
     </div>`;
   }
@@ -129,13 +146,15 @@ class CartItem extends GoodsItem {
   }
 }
 
+*/
+
 const cart = new Cart();
 const list = new GoodsList('.goods-list', cart);
 const searchForm = document.querySelector('.goods-search-from');
 const searchInput = document.querySelector('.goods-search');
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const value = searchInput.value;
+  const value = searchLine.value;
   list.filterGoods(value);
 });
 list.fetchGoods().then(() => {
