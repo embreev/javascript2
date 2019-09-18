@@ -1,4 +1,5 @@
-const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+//const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const BASE_URL = 'https://ncloud.dssl.ru/s/9JcxzdCTiGq8zNQ';
 
 const app = new Vue({
 	el: '#app',
@@ -42,7 +43,6 @@ const app = new Vue({
               if (!result) {
                 throw new Error('Ошибка добавления товара!');
               }
-	          console.log(good);
 	          const item = new CartItem(good.id_product, good.product_name, good.price);
 	          const el = this.goods.find(value => value.id === good.id_product);
               if (!el) {
@@ -50,7 +50,6 @@ const app = new Vue({
 	          } else {
 	            this.goods[this.goods.indexOf(el)].count++;
 	          }
-              console.log(this.goods);
             } catch (e) {
               throw new Error(e);
             }
@@ -67,12 +66,12 @@ const app = new Vue({
             }
         },
         show(goods) {
-            console.log(goods);
             document.querySelector('.goods-list').innerHTML = goods.reduce((acc, item) => {
               const good = new CartItem(item.id, item.title, item.price, item.count);
               return acc += good.render();
             }, '');
         }
+    },
     mounted() {
 	    this.makeGETRequest(`${BASE_URL}/catalogData.json`).then( (goods) => {
 		    this.goods = goods;

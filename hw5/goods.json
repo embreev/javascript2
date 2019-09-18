@@ -1,0 +1,12 @@
+[
+    {
+        "id_product": 1,
+        "product_name": "Ноутбук",
+        "price": 46000
+    },
+    {
+        "id_product": 2,
+        "product_name": "Телефон",
+        "price": 20000
+    }
+]

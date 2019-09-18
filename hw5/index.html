@@ -21,7 +21,7 @@
 	</header>
     <div class="cart" v-if="cart.length === 0">
         <div class="cart-item" v-for="good in cart">
-            <p>{{ good.name }}&nbsp;{{ good.price }}&nbsp;{{ good.count }}&nbsp;<button v-on.click="remove({{ good.id_product }})">-</button></p>
+            <p>{{ good.product_name }}&nbsp;{{ good.price }}&nbsp;{{ good.count }}&nbsp;<button v-on.click="remove({{ good.id_product }})">-</button></p>
         </div>
     </div>
 	<main class="content">
