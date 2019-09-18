@@ -1,10 +1,10 @@
-//const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
-const BASE_URL = 'https://ncloud.dssl.ru/s/9JcxzdCTiGq8zNQ';
+const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
 const app = new Vue({
 	el: '#app',
 	data: {
 		goods: [],
+		good: {},
 		filteredGoods: [],
         cart: [],
 		searchLine: ''
@@ -30,21 +30,20 @@ const app = new Vue({
 				xhr.send();
 			});
 		},
-        filterGoods(value) {
-            const regexp = new RegExp(value, 'i');
+        searchHandler() {
+            const regexp = new RegExp(this.searchLine, 'i');
             this.filteredGoods = this.goods.filter((good) => {
                 return regexp.test(good.product_name);
             });
-            this.render();
         },
-        async add(good) {
+        add() {
             try {
-              const { result } = await makeGETRequest(`${BASE_URL}/addToBasket.json`);
+              const { result } = makeGETRequest(`${BASE_URL}/catalogData.json`);
               if (!result) {
                 throw new Error('Ошибка добавления товара!');
               }
-	          const item = new CartItem(good.id_product, good.product_name, good.price);
-	          const el = this.goods.find(value => value.id === good.id_product);
+	          const item = new CartItem(this.good.id_product, this.good.product_name, this.good.price);
+	          const el = this.goods.find(value => value.id === this.good.id_product);
               if (!el) {
 		        this.goods.push(item);
 	          } else {
@@ -54,7 +53,7 @@ const app = new Vue({
               throw new Error(e);
             }
           },
-        remove(id) {
+        remove() {
             const el = this.goods.find(value => value.id === id);
             if (el) {
               console.log('good');
@@ -65,11 +64,13 @@ const app = new Vue({
               }
             }
         },
-        show(goods) {
-            document.querySelector('.goods-list').innerHTML = goods.reduce((acc, item) => {
+        showCart() {
+			const cartObj = document.querySelector('.cart');
+            cartObj.innerHTML = goods.reduce((acc, item) => {
               const good = new CartItem(item.id, item.title, item.price, item.count);
               return acc += good.render();
             }, '');
+			console.log(cartObj);
         }
     },
     mounted() {
@@ -189,7 +190,7 @@ class CartItem extends GoodsItem {
   }
 }
 
-*/
+
 
 const cart = new Cart();
 const list = new GoodsList('.goods-list', cart);
@@ -211,3 +212,4 @@ list.fetchGoods().then(() => {
     cart.add(good);
   });
 });
+*/
