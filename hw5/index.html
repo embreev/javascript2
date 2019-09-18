@@ -14,17 +14,22 @@
 	  <div class="search">
 		<form class="goods-search-from">
 		  <input type="text" class="goods-search" />
-		  <button class="search-button">Искать</button>
+		  <button class="search-button" v-model="searchLine">Искать</button>
 		</form>
 	  </div>
 	  <button class="cart-button">Корзина</button>
 	</header>
+    <div class="cart" v-if="cart.length === 0">
+        <div class="cart-item" v-for="good in cart">
+            <p>{{ good.name }}&nbsp;{{ good.price }}&nbsp;{{ good.count }}&nbsp;<button v-on.click="remove({{ good.id_product }})">-</button></p>
+        </div>
+    </div>
 	<main class="content">
 		<div class="goods-list">
 			<div class="goods-item" v-for="good in filteredGoods" >
 				<h3>{{ good.product_name }}</h3>
 				<p>{{ good.price }}</p>
-				<button data-id="${this.id}">Добавить в корзину</button>
+				<button v-on.click="add({{ good.id_product }})">Добавить в корзину</button>
 			</div>
 		<div>
 	</main>

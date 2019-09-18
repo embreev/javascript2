@@ -5,6 +5,7 @@ const app = new Vue({
 	data: {
 		goods: [],
 		filteredGoods: [],
+        cart: [],
 		searchLine: ''
 	},
 	methods: {
@@ -27,14 +28,57 @@ const app = new Vue({
 				xhr.open('GET', url);
 				xhr.send();
 			});
-		}
-	},
-	mounted() {
-		this.makeGETRequest(`${BASE_URL}/catalogData.json`).then( (goods) => {
-			this.goods = goods;
-			this.filteredGoods = goods;
-		});
-	}
+		},
+        filterGoods(value) {
+            const regexp = new RegExp(value, 'i');
+            this.filteredGoods = this.goods.filter((good) => {
+                return regexp.test(good.product_name);
+            });
+            this.render();
+        },
+        async add(good) {
+            try {
+              const { result } = await makeGETRequest(`${BASE_URL}/addToBasket.json`);
+              if (!result) {
+                throw new Error('Ошибка добавления товара!');
+              }
+	          console.log(good);
+	          const item = new CartItem(good.id_product, good.product_name, good.price);
+	          const el = this.goods.find(value => value.id === good.id_product);
+              if (!el) {
+		        this.goods.push(item);
+	          } else {
+	            this.goods[this.goods.indexOf(el)].count++;
+	          }
+              console.log(this.goods);
+            } catch (e) {
+              throw new Error(e);
+            }
+          },
+        remove(id) {
+            const el = this.goods.find(value => value.id === id);
+            if (el) {
+              console.log('good');
+              if (el.count > 1) {
+                this.goods[this.goods.indexOf(el)].count--;
+              } else {
+                this.goods.splice(this.goods.indexOf(el), 1);
+              }
+            }
+        },
+        show(goods) {
+            console.log(goods);
+            document.querySelector('.goods-list').innerHTML = goods.reduce((acc, item) => {
+              const good = new CartItem(item.id, item.title, item.price, item.count);
+              return acc += good.render();
+            }, '');
+        }
+    mounted() {
+	    this.makeGETRequest(`${BASE_URL}/catalogData.json`).then( (goods) => {
+		    this.goods = goods;
+		    this.filteredGoods = goods;
+        });
+    }
 });
 
 /*
