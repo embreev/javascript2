@@ -7,7 +7,8 @@ const app = new Vue({
 		good: {},
 		filteredGoods: [],
         cart: [],
-		searchLine: ''
+		searchLine: '',
+        isVisible: false,
 	},
 	methods: {
 		makeGETRequest(url) {
@@ -65,12 +66,13 @@ const app = new Vue({
             }
         },
         showCart() {
-			const cartObj = document.querySelector('.cart');
+            const cartObj = document.querySelector('.cart');
+            this.isVisible = !this.isVisible;
+            cartObj.style.display = this.isVisible ? "block" : "none";
             cartObj.innerHTML = goods.reduce((acc, item) => {
               const good = new CartItem(item.id, item.title, item.price, item.count);
               return acc += good.render();
             }, '');
-			console.log(cartObj);
         }
     },
     mounted() {

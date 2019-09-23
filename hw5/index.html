@@ -10,20 +10,21 @@
 </head>
 <body>
 <div id="app">
-	<header class="header">
-	  <div class="search">
-		<form class="goods-search-from" @submit.prevent="searchHandler">
-		  <input type="text" class="goods-search" v-model.trim="searchLine" />
-		  <button class="search-button">Искать</button>
-		</form>
-	  </div>
-	  <button class="cart-button">Корзина</button>
-	</header>
-    <div class="cart" v-model="showCart">
-        <div class="cart-item" v-for="good in cart">
-            <p>{{ good.product_name }}&nbsp;{{ good.price }}&nbsp;{{ good.count }}&nbsp;<button @click="remove">-</button></p>
+    <header class="header">
+        <div class="search">
+		    <form class="goods-search-from" @submit.prevent="searchHandler">
+                <input type="text" class="goods-search" v-model.trim="searchLine" />
+                <button class="search-button">Искать</button>
+            </form>
         </div>
-    </div>
+        <button class="cart-button" @click="showCart">Корзина</button>
+        <div class="cart">
+            <div class="cart-item" v-for="good in cart">
+                <p>{{ good.product_name }}&nbsp;{{ good.price }}&nbsp;{{ good.count }}&nbsp;<button @click="remove">-</button></p>
+            </div>
+        </div>
+	</header>
+    
 	<main class="content">
 		<div class="goods-list">
 			<div class="goods-item" v-for="good in filteredGoods" >
