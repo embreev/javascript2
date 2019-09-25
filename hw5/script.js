@@ -8,7 +8,7 @@ const app = new Vue({
 		filteredGoods: [],
         cart: [],
 		searchLine: '',
-        isVisible: false,
+        isVisibleCart: false,
 	},
 	methods: {
 		makeGETRequest(url) {
@@ -38,21 +38,21 @@ const app = new Vue({
             });
         },
         add() {
-            try {
-              const { result } = makeGETRequest(`${BASE_URL}/catalogData.json`);
-              if (!result) {
-                throw new Error('Ошибка добавления товара!');
-              }
-	          const item = new CartItem(this.good.id_product, this.good.product_name, this.good.price);
-	          const el = this.goods.find(value => value.id === this.good.id_product);
-              if (!el) {
-		        this.goods.push(item);
-	          } else {
-	            this.goods[this.goods.indexOf(el)].count++;
-	          }
-            } catch (e) {
-              throw new Error(e);
-            }
+//            try {
+//              const { result } = makeGETRequest(`${BASE_URL}/catalogData.json`);
+//              if (!result) {
+//                throw new Error('Ошибка добавления товара!');
+//              }
+//	          const item = new CartItem(this.good.id_product, this.good.product_name, this.good.price);
+//	          const el = this.goods.find(value => value.id === this.good.id_product);
+//              if (!el) {
+//		        this.goods.push(item);
+//	          } else {
+//	            this.goods[this.goods.indexOf(el)].count++;
+//	          }
+//            } catch (e) {
+//              throw new Error(e);
+//            }
           },
         remove() {
             const el = this.goods.find(value => value.id === id);
@@ -67,12 +67,12 @@ const app = new Vue({
         },
         showCart() {
             const cartObj = document.querySelector('.cart');
-            this.isVisible = !this.isVisible;
-            cartObj.style.display = this.isVisible ? "block" : "none";
-            cartObj.innerHTML = goods.reduce((acc, item) => {
-              const good = new CartItem(item.id, item.title, item.price, item.count);
-              return acc += good.render();
-            }, '');
+            this.isVisibleCart = !this.isVisibleCart;
+            cartObj.style.display = this.isVisibleCart ? "block" : "none";
+//            cartObj.innerHTML = goods.reduce((acc, item) => {
+//              const good = new CartItem(item.id, item.title, item.price, item.count);
+//              return acc += good.render();
+//            }, '');
         }
     },
     mounted() {
